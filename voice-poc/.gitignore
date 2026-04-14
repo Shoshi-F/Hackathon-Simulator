@@ -1,0 +1,6 @@
+venv/
+.env
+temp.wav
+__pycache__/
+.env
+.idea/
