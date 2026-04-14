@@ -4,3 +4,4 @@ temp.wav
 __pycache__/
 .env
 .idea/
+*.pyc

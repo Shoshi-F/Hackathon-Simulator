@@ -1,21 +1,24 @@
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+# from groq import Groq
 from openai import OpenAI
 
-# שימי כאן את ה-API KEY שלך
-client = OpenAI(api_key="YOUR_API_KEY_HERE")
+load_dotenv()
 
-# קוראים את ה-prompt
-with open("prompt.txt", "r", encoding="utf-8") as f:
-    prompt = f.read()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+prompt_path = Path(__file__).resolve().parent / "prompts" / "prompt.txt"
+prompt = prompt_path.read_text(encoding="utf-8")
 
 messages = [
     {"role": "system", "content": prompt}
 ]
 
-print("Simulation started. Type exit to stop\n")
+print("Simulation started. Type 'exit' to stop.\n")
 
 while True:
-
-    user_input = input("Agent: ")
+    user_input = input("Agent: ").strip()
 
     if user_input.lower() == "exit":
         break
@@ -24,11 +27,12 @@ while True:
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=messages
+        messages=messages,
+        temperature=0.7,
     )
 
-    reply = response.choices[0].message.content
+    reply = response.choices[0].message.content.strip()
 
-    print("\nCustomer:", reply, "\n")
+    print(f"\nCustomer: {reply}\n")
 
     messages.append({"role": "assistant", "content": reply})

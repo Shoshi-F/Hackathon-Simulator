@@ -1,20 +1,21 @@
 import os
 import shutil
 from fastapi import FastAPI, UploadFile, File
-from groq import Groq
+# from groq import Groq
 from dotenv import load_dotenv
+from openai import OpenAI
 
 load_dotenv()
 
 app = FastAPI()
 
 # יצירת ה-Client של Groq
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 @app.get("/")
 def health():
-    return {"status": "Groq server is running"}
+    return {"status": "OpenAI server is running"}
 
 
 @app.post("/transcribe")
